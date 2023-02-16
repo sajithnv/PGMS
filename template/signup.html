@@ -1,0 +1,33 @@
+{% load static %}
+{% include 'nav.html' %}
+<head>
+	<style type="text/css">
+		a{
+			text-decoration: none;
+		}
+		form{
+			text-align: center;
+		}
+		#id_username,#id_password1,#id_password2{
+			color: #0dcaf0;
+			background: transparent;
+		}
+	</style>
+</head>
+<body>
+	<div class="div-style">
+		<h1 style="color: #0dcaf0">SignUp_Form</h1><hr><hr><br>
+		<form method="post">
+			{% csrf_token %}
+			<!-- {{ form.as_p }}<br><hr> -->
+			<h5>{{form.username.label}}</h5>
+			<h5>{{form.username}}</h5>
+			<h5>{{form.password1.label}}</h5>
+			<h5>{{form.password1}}</h5>
+			<h5>{{form.password2.label}}</h5>
+			<h5>{{form.password2}}</h5>
+		    <input type="submit" value="Submit" class="btn btn-info"><br><br>
+			<a href="{% url 'account1:login1' %}">- Already_a_MEMBER :: Log_in -</a>
+		</form>
+	</div>
+</body>	

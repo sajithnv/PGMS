@@ -1,0 +1,31 @@
+{% load static %}
+{% include 'nav.html' %}
+<head>
+	<style type="text/css">
+		a{
+			text-decoration: none;
+		}
+		form{
+			text-align: center;
+		}
+		#id_username,#id_password{
+			color: #0dcaf0;
+			background: transparent;
+		}
+	</style>
+</head>
+<body>
+	<div class="div-style">
+		<h1 style="color: #0dcaf0">Log_in Form</h1><hr><hr><br>
+		<form method="post">
+			{% csrf_token %}
+			<!-- {{ form.as_p }} -->
+			<h5>{{form.username.label}}</h5>
+			<h5>{{form.username}}</h5>
+			<h5>{{form.password.label}}</h5>
+			<h5>{{form.password}}</h5>
+		    <input type="submit" value="Log_in" class="btn btn-info"><br><br>
+			<a href="{% url 'account1:signup1' %}">- New_Member :: Sign_up -</a>
+		</form>
+	</div>
+</body>	

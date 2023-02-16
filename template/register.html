@@ -1,0 +1,35 @@
+{% include 'nav.html' %}
+{% load static%}
+{% block content %}
+<head>
+    <style>
+        form{
+            /* padding-left:40%; */
+            text-align: center;
+        }
+		#id_uname,#id_phone_number,#id_user-img,#id_address{
+			color: #0dcaf0;
+			background: transparent;
+		}
+    </style>
+</head>
+<body>
+    <div class="payment div-style" style="min-height:500px">
+        <h1 style="color: #0dcaf0">Registration Form</h1><hr><hr><br>
+        <form method="post">
+			{% csrf_token %}
+            <h5>{{form.uname.label}}</h5>
+            {% if user.is_superuser %}
+            <h5>{{form.uname}}</h5>
+            {% else %}
+            <h5><input type="text" name="uname" maxlength="100" required="" id="id_uname" value="{{uname}}" readonly></h5>
+            {% endif %}
+            <h5>{{form.phone_number.label}}</h5>
+			<h5>{{form.phone_number}}</h5>
+            <h5>{{form.address.label}}</h5>
+			<h5>{{form.address}}</h5>
+		    <input type="submit" value="Register" class="btn btn-info"><br><br>
+		</form>
+    </div>
+</body>
+{% endblock %}

@@ -1,0 +1,207 @@
+{% include 'nav.html' %}
+{% load static%}
+{% block content %}
+
+<head>
+    <style>
+        h4 {
+            color: #0dcaf0;
+        }
+
+        .short-nav1 {
+            backdrop-filter: blur(4px);
+            text-align: right;
+            position: fixed;
+            width: 100%;
+            padding-right: 2%;
+            z-index: 1;
+            color:#0dcaf0;
+        }
+        #not-registered,#all-users,#not-confirmed,#confirmed{
+            padding-top: 7%;
+        }
+        form{
+            /* padding-left:40%; */
+            text-align: center;
+        }
+		#id_uname,#id_phone_number,#id_month,#id_amount,option{
+			color: #0dcaf0;
+			background: transparent;
+		}
+        .btn-sm{
+            height:25px;
+        }
+    </style>
+</head>
+
+<body id="not-register1">
+    {% if user.is_superuser %}
+    <div class="short-nav1">
+        <a class="short-nav-items btn btn-danger btn-sm float-start" style="margin-left:2%" href="{% url 'pgms1:reset_payment' %}"> RESET_PAYMENT </a>
+        <a class="short-nav-items btn btn-warning btn-sm" aria-current="page" href="#not-registered"> Register_Pending </a>|
+        <a class="short-nav-items btn btn-info btn-sm" href="#all-users"> Registered </a>|
+        <a class="short-nav-items btn btn-danger btn-sm" href="#not-confirmed"> Not_Paid </a>|
+        <a class="short-nav-items btn btn-success btn-sm" href="#confirmed"> Paid </a>
+    </div>
+    {% endif %}
+    <div class="payment div-style" style="min-height:500px">
+        <h1 style="color: #0dcaf0">Profile</h1>
+        <hr>
+        <hr>
+        {% if user.is_superuser %}
+        <div id="not-registered">
+            <h4>Register_Pending_List</h4>
+            <hr>
+            {% for i in not_registered1 %}
+            <div class="div-style">
+                <h4>{{i.uname}} ->
+                    <a href="{% url 'pgms1:register_now' i.phone_number %}"><input type="button" value="Register"
+                            class="btn btn-warning float-end" style="margin-right:1%;"></a>
+                </h4>
+                <hr>
+                <table cellpadding="5">
+                    <tr>
+                        <th>PhoneNumber</th>
+                        <th>Address</th>
+                    </tr>
+                    <tr>
+                        <td>{{i.phone_number}}</td>
+                        <td>{{i.address}}</td>
+                    </tr>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="not-confirmed">
+            <h4>Confirmation_Pending_List</h4>
+            <hr>
+            {% for i in not_confirmed1 %}
+            <div class="div-style">
+                <h4>{{i.uname}} ->
+                    <a href="{% url 'pgms1:confirm_now' i.phone_number %}"><input type="button" value="Confirm Now"
+                            class="btn btn-danger float-end" style="margin-right:1%;"></a>
+                </h4>
+                <hr>
+                <table cellpadding="5">
+                    <tr>
+                        <th>PhoneNumber</th>
+                        <th>Amount</th>
+                    </tr>
+                    <tr>
+                        <td>{{i.phone_number}}</td>
+                        <td>{{i.amount}}</td>
+                    </tr>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="confirmed">
+            <h4>Payment_Confirmed_List</h4>
+            <hr>
+            {% for i in confirmed1 %}
+            <div class="div-style">
+                <h4>{{i.uname}} ->
+                    <a href="{% url 'pgms1:register_now' i.phone_number %}"><input type="button" value="Paid"
+                            class="btn btn-success float-end" style="margin-right:1%;"></a>
+                </h4>
+                <hr>
+                <table cellpadding="5">
+                    <tr>
+                        <th>PhoneNumber</th>
+                        <th>Amount</th>
+                    </tr>
+                    <tr>
+                        <td>{{i.phone_number}}</td>
+                        <td>{{i.amount}}</td>
+                    </tr>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="all-users">
+            <h4>All_Registered_Users</h4>
+            <hr>
+            {% for i in registered1 %}
+            <div class="div-style">
+                <h4>{{i.uname}} ->
+                    <input type="button" value="Registered"class="btn btn-info float-end" style="margin-right:1%;">
+                </h4>
+                <table cellpadding="5">
+                    <tr>
+                        <th>PhoneNumber</th>
+                        <th>Address</th>
+                    </tr>
+                    <tr>
+                        <td>{{i.phone_number}}</td>
+                        <td>{{i.address}}</td>
+                    </tr>
+                </table>
+            </div>
+            {% endfor %}
+        </div>
+        {% elif rent_paid1 %}
+        {% for i in rent_paid1 %}
+        <h4>{{i.uname}}</h4>
+        <hr>
+        <table cellpadding="5">
+            <tr>
+                <th>PhoneNumber</th>
+                <th>Amount</th>
+            </tr>
+            <tr>
+                <td>{{i.phone_number}}</td>
+                <td>{{i.amount}}</td>
+            </tr>
+        </table>
+        
+        <hr>
+        <h4>Status
+        <input type="button" value="Paid"class="btn btn-success float-end" style="margin-left:1%;">
+        {% endfor %}
+        {% else %}
+        {% for i in registered_data1 %}
+        <h4>{{i.uname}}</h4>
+        <hr>
+        <table cellpadding="5">
+            <tr>
+                <th>PhoneNumber</th>
+                <th>Address</th>
+            </tr>
+            <tr>
+                <td>{{i.phone_number}}</td>
+                <td>{{i.address}}</td>
+            </tr>
+        </table>
+        
+        <hr>
+        <h4>Status
+        <input type="button" value="Not Paid"class="btn btn-danger float-end" style="margin-left:1%;">
+        <input type="button" value="Pay Now" onclick="hide_div()"
+            class="btn btn-warning float-end" style="margin-left:1%;">
+        </h4>
+        <hr>
+        <div class="add_month div-style" id="hidden" style="display: None;">
+            <form method="post">
+                {% csrf_token %}
+                <h5><input type="text" name="uname" maxlength="100" required="" id="id_uname" value="{{uname1}}" readonly></h5>
+                <h5><input type="text" name="phone_number" maxlength="100" required="" id="id_phone_number" value="{{phone_number1}}" readonly></h5>
+                <input type="number" name="amount" min="0" required="" value="6000"id="id_amount" readonly>
+                <!-- <h6>{{form1.month}}</h6> -->
+                <input type="submit" value="Pay" class="btn btn-info"><br><br>
+            </form>
+        </div>
+        {% endfor %}
+        {% endif %}
+
+    </div>
+    <script>
+        function hide_div(){
+            var x=document.getElementById("hidden");
+            if(x.style.display==="none")
+                x.style.display="block";
+            else
+                x.style.display="none";
+        }
+    </script>
+</body>
+{% endblock %}
